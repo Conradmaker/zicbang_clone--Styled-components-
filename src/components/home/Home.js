@@ -1,5 +1,17 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import { useMainSearch } from "../../App";
+
+const slideUp = keyframes`
+from{
+    transform:translateY(1000px)
+}
+
+  to {
+    transform: translateY(0px);
+  }
+
+`;
 
 const Visual = styled.section`
   width: 100%;
@@ -8,6 +20,11 @@ const Visual = styled.section`
   margin-top: 72px;
   background-position: center;
   position: relative;
+
+  @media (max-width: 1024px) {
+    height: 200px;
+    background-size: cover;
+  }
 `;
 const SearchBox = styled.div`
   display: flex;
@@ -20,6 +37,10 @@ const SearchBox = styled.div`
   height: 140px;
   padding-bottom: 15px;
   box-sizing: border-box;
+  @media (max-width: 1024px) {
+    position: fixed;
+    display: none;
+  }
 `;
 const SearchTop = styled.ul`
   width: 880px;
@@ -88,12 +109,18 @@ const FeatureContainer = styled.section`
   margin: 0 auto;
   display: flex;
   padding: 15px 0;
+  @media (max-width: 1024px) {
+    width: 95%;
+    display: grid;
+    grid-template-rows: (3, 1rf);
+  }
 `;
 const FeatureItem = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 10px;
+  box-sizing: border-box;
 `;
 const Summary = styled.div`
   width: 100%;
@@ -129,6 +156,10 @@ const Remian = styled.div`
   background-size: 100%;
   background-repeat: no-repeat;
   cursor: pointer;
+  @media (max-width: 1024px) {
+    width: 80%;
+    background-size: contain;
+  }
 `;
 const NewsList = styled.ul`
   width: 100%;
@@ -151,6 +182,10 @@ const DownAppContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
 `;
 const DownAppImg = styled.section`
   width: 500px;
@@ -160,12 +195,28 @@ const DownAppImg = styled.section`
   background-position: center;
   background-repeat: no-repeat;
   margin-right: 15px;
+  @media (max-width: 1024px) {
+    margin: 0;
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 const DownAppLink = styled.div`
   width: 30%;
   height: 50%;
   margin: auto 0;
   margin-left: 15px;
+  @media (max-width: 1024px) {
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    h1 {
+      display: none;
+    }
+  }
   h1 {
     font-size: 25px;
     font-weight: bold;
@@ -197,6 +248,7 @@ const Banner = styled.section`
   display: flex;
   align-content: center;
   justify-content: center;
+
   h2 {
     color: #49599a;
     font-size: 16px;
@@ -213,6 +265,16 @@ const Banner = styled.section`
     outline: none;
     color: #49599a;
     padding: 5px 20px;
+  }
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    padding: 10px;
+    h2 {
+      text-align: center;
+      font-size: 13px;
+      margin: 0;
+      margin-bottom: 10px;
+    }
   }
 `;
 const Footer = styled.footer`
@@ -249,6 +311,7 @@ const Footer = styled.footer`
       border: none;
     }
   }
+
   h1 {
     font-size: 24px;
     margin-top: 15px;
@@ -257,9 +320,66 @@ const Footer = styled.footer`
     font-weight: bold;
     margin-top: 15px;
   }
+  @media (max-width: 1024px) {
+    ul {
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: (2, 1fr);
+      gap: 5px;
+      a:nth-child(2),
+      a:nth-child(4) {
+        border: none;
+      }
+      a:last-child {
+        grid-column: 1/3;
+        margin-top: 10px;
+      }
+    }
+    h1 {
+      font-size: 10px;
+    }
+    h2 {
+      font-size: 13px;
+    }
+  }
+  height: auto;
+  padding-bottom: 20px;
 `;
-
+const MobileSearch = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 80px 10px;
+  animation: ${slideUp} 0.5s ease-in-out forwards;
+  div {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    border-bottom: 1px solid #7986cb;
+  }
+  input {
+    font-size: 16px;
+    flex: 1;
+    background: white;
+    border: none;
+    outline: none;
+  }
+  ${SearchBTN} {
+    background: none;
+    color: #7986cb;
+  }
+  ${SearchIMG} {
+    width: 40px;
+    height: 40px;
+  }
+`;
 export default function Home() {
+  const SearchOpen = useMainSearch();
+
   return (
     <div>
       <Visual>
@@ -356,7 +476,9 @@ export default function Home() {
         <DownAppImg />
         <DownAppLink>
           <h1>직방앱을 다운받으세요!</h1>
+          {/* eslint-disable-next-line */}
           <a href="/"></a>
+          {/* eslint-disable-next-line */}
           <a href="/"></a>
         </DownAppLink>
       </DownAppContainer>
@@ -390,6 +512,15 @@ export default function Home() {
         </h1>
         <h2>유원근 (yhg0337@gmail.com)</h2>
       </Footer>
+      {SearchOpen && (
+        <MobileSearch>
+          <div>
+            <SearchIMG />
+            <input placeholder="입력해주세요" />
+            <SearchBTN>검색</SearchBTN>
+          </div>
+        </MobileSearch>
+      )}
     </div>
   );
 }
