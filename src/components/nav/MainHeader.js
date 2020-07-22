@@ -112,7 +112,7 @@ const LeftMenu = styled.ul`
       color: #7986cb;
     }
     ul {
-      animation: ${menuPop} 0.1s ease-in forwards;
+      animation: ${menuPop} 0.5s ease-in forwards;
       padding-top: 23px;
       display: none;
       background: white;
